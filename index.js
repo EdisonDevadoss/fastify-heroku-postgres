@@ -1,17 +1,34 @@
 const fastify = require('fastify')({
-  logger: true
+  logger: true,
+  ignoreTrailingSlash: true
 });
 const jsonParser = require('fast-json-body');
-
+const qs = require('qs');
 const db = require('./queries');
 
 const PORT = process.env.PORT || 3000;
 
-fastify.addContentTypeParser('application/json', function (req, done) {
+fastify.addContentTypeParser('application/jsoff', function (req, done) {
   jsonParser(req, function (err, body) {
     done(err, body)
   })
-});
+})
+
+fastify.addContentTypeParser('application/x-www-form-urlencoded', function (req, done) {
+  var body = ''
+  req.on('data', function (data) {
+    body += data
+  })
+  req.on('end', function () {
+    try {
+      const parsed = qs.parse(body)
+      done(null, parsed)
+    } catch (e) {
+      done(e)
+    }
+  })
+  req.on('error', done)
+})
 
 fastify.get('/', (req, res)=>{
     res.send({hello: 'world'})
@@ -19,7 +36,7 @@ fastify.get('/', (req, res)=>{
 
 fastify.get('/users', db.getUsers);
 fastify.get('/users/:id', db.getUserById);
-fastify.post('/users/', db.createUser);
+fastify.post('/users', db.createUser);
 fastify.put('/users/:id', db.updateUser);
 fastify.delete('/users/:id', db.deleteUser);
 
