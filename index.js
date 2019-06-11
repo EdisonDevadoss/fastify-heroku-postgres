@@ -1,10 +1,25 @@
-const fastify = require('fastify');
-const app = fastify();
+const fastify = require('fastify')({
+  logger: true
+});
+const jsonParser = require('fast-json-body')
+const db = require('./queries');
 
-const PORT = process.env.NODE_ENV || 3000
+const PORT = process.env.NODE_ENV || 3000;
 
-app.get('/', (req, res)=>{
+fastify.addContentTypeParser('application/jsoff', function (req, done) {
+  jsonParser(req, function (err, body) {
+    done(err, body)
+  })
+})
+
+fastify.get('/', (req, res)=>{
     res.send({hello: 'world'})
 })
 
-app.listen(PORT)
+fastify.get('/users', db.getUsers);
+fastify.get('/users/:id', db.getUserById);
+fastify.post('/users/', db.createUser);
+fastify.put('/users/:id', db.updateUser);
+fastify.delete('/users/:id', db.deleteUser);
+
+fastify.listen(PORT)
