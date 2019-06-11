@@ -1,7 +1,8 @@
 const fastify = require('fastify')({
   logger: true
 });
-const jsonParser = require('fast-json-body')
+const jsonParser = require('fast-json-body');
+
 const db = require('./queries');
 
 const PORT = process.env.NODE_ENV || 3000;
@@ -10,7 +11,7 @@ fastify.addContentTypeParser('application/jsoff', function (req, done) {
   jsonParser(req, function (err, body) {
     done(err, body)
   })
-})
+});
 
 fastify.get('/', (req, res)=>{
     res.send({hello: 'world'})
