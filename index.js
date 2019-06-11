@@ -7,7 +7,7 @@ const db = require('./queries');
 
 const PORT = process.env.PORT || 3000;
 
-fastify.addContentTypeParser('application/jsoff', function (req, done) {
+fastify.addContentTypeParser('application/json', function (req, done) {
   jsonParser(req, function (err, body) {
     done(err, body)
   })
