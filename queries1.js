@@ -1,10 +1,11 @@
 const { Client } = require("pg");
 
-const connectionString = "--------------";// enter your crediential
-
 const client = new Client({
-  connectionString: connectionString,
-  ssl: true
+  user: "demo",
+  host: "127.0.0.1",
+  database: "demo",
+  password: "edison",
+  port: 5432
 });
 
 client.connect();
