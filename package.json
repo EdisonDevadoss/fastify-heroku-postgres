@@ -14,7 +14,7 @@
     "fast-json-body": "^1.1.0",
     "fastify": "^2.4.1",
     "pg": "^7.11.0",
-    "qs": "^6.7.0"
+    "qs": "^6.7.3"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
